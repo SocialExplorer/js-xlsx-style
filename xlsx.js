@@ -7715,6 +7715,7 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
 	var tag, tagr = 0, tagc = 0;
 	var sstr;
 	var fmtid = 0, fillid = 0, do_format = Array.isArray(styles.CellXf), cf;
+	var rows = [], rowobj = {}, rowrite = false;
 	for(var marr = sdata.split(rowregex), mt = 0, marrlen = marr.length; mt != marrlen; ++mt) {
 		x = marr[mt].trim();
 		var xlen = x.length;
@@ -7725,6 +7726,15 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
 		tag = parsexmltag(x.substr(0,ri), true);
 		/* SpreadSheetGear uses implicit r/c */
 		tagr = typeof tag.r !== 'undefined' ? parseInt(tag.r, 10) : tagr+1; tagc = -1;
+		
+		if(opts && opts.cellStyles) {
+			rowobj = {}; rowrite = false;
+			if(tag.ht) { rowrite = true; rowobj.hpt = parseFloat(tag.ht); rowobj.hpx = pt2px(rowobj.hpt); }
+			if(tag.hidden == "1") { rowrite = true; rowobj.hidden = true; }
+			if(tag.outlineLevel != null) { rowrite = true; rowobj.level = +tag.outlineLevel; }
+			if(rowrite) rows[tagr-1] = rowobj;
+		}
+		
 		if(opts.sheetRows && opts.sheetRows < tagr) continue;
 		if(guess.s.r > tagr - 1) guess.s.r = tagr - 1;
 		if(guess.e.r < tagr - 1) guess.e.r = tagr - 1;
@@ -7807,6 +7817,7 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
             s[tag.r] = p;
       }
 	}
+	if(rows.length > 0) s['!rows'] = rows;
 }; })();
 	
 var DEF_PPI = 96, PPI = DEF_PPI;
