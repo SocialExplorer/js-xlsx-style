@@ -7498,7 +7498,7 @@ function get_cell_style_csf(cellXf) {
     if (cellXf.borderId) {
       s.border = styles.Borders[cellXf.borderId];
     }
-    if (cellXf.applyAlignment==1) {
+    if (cellXf.alignment) {
       s.alignment = cellXf.alignment;
     }
 
