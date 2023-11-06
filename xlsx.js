@@ -5295,7 +5295,7 @@ function parse_theme_xml(data, opts) {
 			[t[2], t[3]] = [t[3], t[2]];
 		}
 	}
-	console.log('themes', themes);
+
 	return themes;
 }
 
