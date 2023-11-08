@@ -5282,6 +5282,20 @@ function parse_theme_xml(data, opts) {
 	if(!(t=data.match(themeltregex))) throw 'themeElements not found in theme';
 	parse_themeElements(t[0], opts);
 
+	// Issue: https://social.technet.microsoft.com/Forums/office/en-US/aa557c71-c45d-4881-ab41-49aa1ed745f4/theme-color-defaults?forum=excel
+	// Since from design reasons Excel changed how theme palletes are represented where pallete lt1 is on first place, following dk1, lt2, dk2
+	// but they didn't applied changes into theme.xml file where order of theme palletes is dk1, lt1, dk2, lt2. This causes bugs when parsing the style and colors
+	// when importing xlsx file and making Table from this file
+	if (themes.themeElements && themes.themeElements.clrScheme) {
+		let t = themes.themeElements.clrScheme;
+		if (t[0].name === 'dk1' && t[1].name === 'lt1') {
+			[t[0], t[1]] = [t[1], t[0]];
+		}
+		if (t[2].name === 'dk2' && t[3].name === 'lt2') {
+			[t[2], t[3]] = [t[3], t[2]];
+		}
+	}
+
 	return themes;
 }
 
