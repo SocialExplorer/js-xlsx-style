@@ -5295,7 +5295,7 @@ function parse_theme_xml(data, opts) {
         		clrScheme[0] = clrScheme[1];
         		clrScheme[1] = temp;
 		}
-		if (t[2].name === 'dk2' && t[3].name === 'lt2') {
+		if (clrScheme[2].name === 'dk2' && clrScheme[3].name === 'lt2') {
 			temp = clrScheme[2];
         		clrScheme[2] = clrScheme[3];
         		clrScheme[3] = temp;
