@@ -5287,12 +5287,18 @@ function parse_theme_xml(data, opts) {
 	// but they didn't applied changes into theme.xml file where order of theme palletes is dk1, lt1, dk2, lt2. This causes bugs when parsing the style and colors
 	// when importing xlsx file and making Table from this file
 	if (themes.themeElements && themes.themeElements.clrScheme) {
-		let t = themes.themeElements.clrScheme;
-		if (t[0].name === 'dk1' && t[1].name === 'lt1') {
-			[t[0], t[1]] = [t[1], t[0]];
+		var clrScheme = themes.themeElements.clrScheme;
+		var temp;
+
+		if (clrScheme[0].name === 'dk1' && clrScheme[1].name === 'lt1') {
+			temp = clrScheme[0];
+        		clrScheme[0] = clrScheme[1];
+        		clrScheme[1] = temp;
 		}
 		if (t[2].name === 'dk2' && t[3].name === 'lt2') {
-			[t[2], t[3]] = [t[3], t[2]];
+			temp = clrScheme[2];
+        		clrScheme[2] = clrScheme[3];
+        		clrScheme[3] = temp;
 		}
 	}
 
