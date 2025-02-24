@@ -4713,114 +4713,124 @@ function parse_fills(t, opts) {
 }
 
 function parse_fonts(t, opts) {
-	styles.Fonts = [];
-	var font = {};
+  styles.Fonts = [];
+  var font = {};
 
-	t[0].match(tagregex).forEach(function (x) {
-		var y = parsexmltag(x);
-		switch (y[0]) {
+  t[0].match(tagregex).forEach(function (x) {
+    var y = parsexmltag(x);
 
-			case '<fonts':
-			case '<fonts>':
-			case '</fonts>':
-				break;
-			case '<font':
-			case '<font>':
-				break;
-			case '</font>':
-				styles.Fonts.push(font);
-				font = {};
-				break;
+    switch (y[0]) {
+      case '<fonts':
+      case '<fonts>':
+      case '</fonts>':
+        break;
 
-			case '<name':
-				if (y.val) font.name = y.val;
-				break;
-			case '<name/>':
-			case '</name>':
-				break;
+      case '<font':
+      case '<font>':
+        break;
 
-			case '<family':
-			case '<family>':
-				if (y.val) font.family = y.val;
-				break;
-			case '</family>':
-			case '<family/>':
-				break;
+      case '</font>':
+        styles.Fonts.push(font);
+        font = {};
+        break;
 
-			case '<b':
-			case '<b/>':
-				font.bold = true;
-				break;
+      case '<name':
+        if (y.val) font.name = y.val;
+        break;
 
-			case '<u':
-			case '<u/>':
-				font.underline = true;
-				if (y.val) font.underlineType = y.val; // Capture underline type if specified
-				break;
+      case '<name/>':
+      case '</name>':
+        break;
 
-			case '<i':
-			case '<i/>':
-				font.italic = true;
-				break;
+      case '<family':
+      case '<family>':
+        if (y.val) font.family = y.val;
+        break;
 
-			case '<strike':
-			case '<strike/>':
-				font.strike = true;
-				break;
+      case '</family>':
+      case '<family/>':
+        break;
 
-			case '<outline':
-			case '<outline/>':
-				font.outline = true;
-				break;
+      case '<b':
+      case '<b/>':
+        font.bold = true;
+        break;
 
-			case '<shadow':
-			case '<shadow/>':
-				font.shadow = true;
-				break;
+      case '<u':
+      case '<u/>':
+        font.underline = true;
+        if (y.val) font.underlineType = y.val;
+        break;
 
-			case '<sz':
-				if (y.val) font.sz = y.val;
-				break;
-			case '<sz/>':
-			case '</sz>':
-				break;
+      case '<i':
+      case '<i/>':
+        font.italic = true;
+        break;
 
-			case '<vertAlign':
-				if (y.val) font.vertAlign = y.val;
-				break;
-			case '<vertAlign/>':
-			case '</vertAlign>':
-				break;
+      case '<strike':
+      case '<strike/>':
+        font.strike = true;
+        break;
 
-			case '<color':
-				if (!font.color) font.color = {};
-				if (y.theme) font.color.theme = y.theme;
-				if (y.tint) font.color.tint = y.tint;
-				if (y.theme && themes.themeElements && themes.themeElements.clrScheme) {
-					font.color.rgb = rgb_tint(themes.themeElements.clrScheme[font.color.theme].rgb, font.color.tint || 0);
-				}
-				if (y.rgb) font.color.rgb = y.rgb;
-				break;
-			case '<color/>':
-			case '</color>':
-				break;
+      case '<outline':
+      case '<outline/>':
+        font.outline = true;
+        break;
 
-			default:
-				console.log('unrecognized ' + y[0] + ' in fonts');
-		}
-	});
+      case '<shadow':
+      case '<shadow/>':
+        font.shadow = true;
+        break;
+
+      case '<sz':
+        if (y.val) font.sz = y.val;
+        break;
+
+      case '<sz/>':
+      case '</sz>':
+        break;
+
+      case '<vertAlign':
+        if (y.val) font.vertAlign = y.val;
+        break;
+
+      case '<vertAlign/>':
+      case '</vertAlign>':
+        break;
+
+      case '<color':
+        if (!font.color) font.color = {};
+        if (y.theme) font.color.theme = y.theme;
+        if (y.tint) font.color.tint = y.tint;
+        if (y.theme && themes.themeElements && themes.themeElements.clrScheme) {
+          font.color.rgb = rgb_tint(themes.themeElements.clrScheme[font.color.theme].rgb, font.color.tint || 0);
+        }
+        if (y.rgb) font.color.rgb = y.rgb;
+        break;
+
+      case '<color/>':
+      case '</color>':
+        break;
+
+      default:
+        console.log('unrecognized ' + y[0] + ' in fonts');
+    }
+  });
 }
 
 function parse_borders(t, opts) {
   styles.Borders = [];
   var border = {}, sub_border = {};
+
   t[0].match(tagregex).forEach(function (x) {
     var y = parsexmltag(x);
+
     switch (y[0]) {
       case '<borders':
       case  '<borders>':
       case '</borders>':
         break;
+
       case '<border':
       case '<border>':
 	  case '<border/>':
@@ -4828,9 +4838,8 @@ function parse_borders(t, opts) {
         if (y.diagonalUp) { border.diagonalUp = y.diagonalUp; }
         if (y.diagonalDown) { border.diagonalDown = y.diagonalDown; }
         styles.Borders.push(border);
+        break;
 
-        break;
-        break;
       case '</border>':
         break;
 
@@ -4841,6 +4850,7 @@ function parse_borders(t, opts) {
           sub_border.style = y.style;
         }
         break;
+
       case '<right':
 	  case '<right/>':
         sub_border = border.right = {};
@@ -4848,6 +4858,7 @@ function parse_borders(t, opts) {
           sub_border.style = y.style;
         }
         break;
+
       case '<top':
 	  case '<top/>':
         sub_border = border.top = {};
@@ -4855,6 +4866,7 @@ function parse_borders(t, opts) {
           sub_border.style = y.style;
         }
         break;
+
       case '<bottom':
 	  case '<bottom/>':
         sub_border = border.bottom = {};
@@ -4862,6 +4874,7 @@ function parse_borders(t, opts) {
           sub_border.style = y.style;
         }
         break;
+
       case '<diagonal':
 	  case '<diagonal/>':
         sub_border = border.diagonal = {};
@@ -4876,16 +4889,17 @@ function parse_borders(t, opts) {
         if (y.theme && themes.themeElements && themes.themeElements.clrScheme) {
           sub_border.color.rgb = rgb_tint(themes.themeElements.clrScheme[sub_border.color.theme].rgb, sub_border.color.tint || 0);
         }
-
         if (y.tint) sub_border.color.tint = y.tint;
         if (y.rgb) sub_border.color.rgb = y.rgb;
         if (y.auto) sub_border.color.auto = y.auto;
         break;
+
       case '<name/>':
       case '</name>':
         break;
+
       default:
-        break;
+        console.log('unrecognized ' + y[0] + ' in borders');
     }
   });
 
@@ -7874,7 +7888,7 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
                 if(opts.cellStyles && cf.fillId != null) fillid = cf.fillId;
               }
         } else if (tag.s === undefined) {
-			var ti = 1;
+			var ti = 0;
 			for(var i = 0; i < styles.CellXf.length; i++) {
 				if(styles.CellXf[i]) {
 					ti = i;
@@ -7883,7 +7897,7 @@ return function parse_ws_xml_data(sdata, s, opts, guess) {
 			}
 			cf = styles.CellXf[ti];
 			if (opts.cellStyles) {
-				p.s = get_cell_style_csf(cf)
+				p.s = get_cell_style_csf(cf);
 			}
 			if(cf != null) {
                 if(cf.numFmtId != null) fmtid = cf.numFmtId;
