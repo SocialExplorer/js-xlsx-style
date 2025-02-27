@@ -4605,7 +4605,7 @@ function rgb_tint(hex, tint) {
 }
 
 /* 18.3.1.13 width calculations */
-var DEF_MDW = 11, MAX_MDW = 15, MIN_MDW = 1, MDW = DEF_MDW;
+var DEF_MDW = 7, MAX_MDW = 15, MIN_MDW = 1, MDW = DEF_MDW;
 function width2px(width) { return (( width + ((128/MDW)|0)/256 )* MDW )|0; }
 function px2char(px) { return (((px - 5)/MDW * 100 + 0.5)|0)/100; }
 function char2width(chr) { return (((chr * MDW + 5)/MDW*256)|0)/256; }
