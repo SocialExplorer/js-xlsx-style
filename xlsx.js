@@ -7628,6 +7628,11 @@ function parse_ws_xml(data, opts, rels) {
 		parse_ws_xml_cols(columns, cols);
 	}
 
+	var sheetViewMatch = data.match(/<sheetView[^>]*>.*?<\/sheetView>/);
+	if(sheetViewMatch) {
+	  parse_ws_xml_sheetview(s, sheetViewMatch[0]);
+	}
+
 	var refguess = {s: {r:1000000, c:1000000}, e: {r:0, c:0} };
 
 	/* 18.3.1.80 sheetData CT_SheetData ? */
@@ -7724,6 +7729,28 @@ function parse_ws_xml_cols(columns, cols) {
 	
     while (colm <= colM) columns[colm++] = coll;
   }
+}
+
+function parse_ws_xml_sheetview(s, sheetview) {
+  if (!sheetview) return;
+
+  var view = parsexmltag(sheetview, true);
+
+  // Set default values if attributes are not present
+  s['!showGridLines'] = view.showGridLines !== 'false';
+  s['!tabSelected'] = view.tabSelected ? view.tabSelected : '0';
+  s['!workbookViewId'] = view.workbookViewId ? view.workbookViewId : '0';
+
+  // Add other common sheetView attributes with defaults
+  s['!rightToLeft'] = view.rightToLeft === 'true';
+  s['!showRowColHeaders'] = view.showRowColHeaders !== 'false';
+  s['!showZeros'] = view.showZeros !== 'false';
+  s['!showOutlineSymbols'] = view.showOutlineSymbols !== 'false';
+  s['!defaultGridColor'] = view.defaultGridColor !== 'false';
+  s['!view'] = view.view ? view.view : 'normal';
+  s['!zoomScale'] = view.zoomScale ? view.zoomScale : '100';
+
+  return s;
 }
 
 function write_ws_xml_cols(ws, cols) {
