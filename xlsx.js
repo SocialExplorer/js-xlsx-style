@@ -7736,17 +7736,9 @@ function parse_ws_xml_sheetview(s, sheetview) {
 
   var view = parsexmltag(sheetview, true);
 
-  // Set default values if attributes are not present
-  s['!showGridLines'] = view.showGridLines !== 'false';
+  s['!showGridLines'] = view.showGridLines === '1' || view.showGridLines === 'true';
   s['!tabSelected'] = view.tabSelected ? view.tabSelected : '0';
   s['!workbookViewId'] = view.workbookViewId ? view.workbookViewId : '0';
-
-  // Add other common sheetView attributes with defaults
-  s['!rightToLeft'] = view.rightToLeft === 'true';
-  s['!showRowColHeaders'] = view.showRowColHeaders !== 'false';
-  s['!showZeros'] = view.showZeros !== 'false';
-  s['!showOutlineSymbols'] = view.showOutlineSymbols !== 'false';
-  s['!defaultGridColor'] = view.defaultGridColor !== 'false';
   s['!view'] = view.view ? view.view : 'normal';
   s['!zoomScale'] = view.zoomScale ? view.zoomScale : '100';
 
