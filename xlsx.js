@@ -7731,17 +7731,22 @@ function parse_ws_xml_cols(columns, cols) {
   }
 }
 
+function booleanParser(value, defaultValue) {
+  if (value === undefined) return defaultValue;
+  return value === '1' || value === 'true';
+}
+
 function parse_ws_xml_sheetview(s, sheetview) {
   if (!sheetview) return;
 
   var view = parsexmltag(sheetview, true);
 
-  s['!showGridLines'] = view.showGridLines === '1' || view.showGridLines === 'true';
+  s['!showGridLines'] = booleanParser(view.showGridLines, true);
+  s['!defaultGridColor'] = booleanParser(view.defaultGridColor, true);
   s['!tabSelected'] = view.tabSelected ? view.tabSelected : '0';
   s['!workbookViewId'] = view.workbookViewId ? view.workbookViewId : '0';
   s['!view'] = view.view ? view.view : 'normal';
   s['!zoomScale'] = view.zoomScale ? view.zoomScale : '100';
-  s['!defaultGridColor'] = view.defaultGridColor === '1' || view.defaultGridColor === 'true';
 
   return s;
 }
