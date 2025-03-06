@@ -7741,6 +7741,7 @@ function parse_ws_xml_sheetview(s, sheetview) {
   s['!workbookViewId'] = view.workbookViewId ? view.workbookViewId : '0';
   s['!view'] = view.view ? view.view : 'normal';
   s['!zoomScale'] = view.zoomScale ? view.zoomScale : '100';
+  s['!defaultGridColor'] = view.defaultGridColor === '1' || view.defaultGridColor === 'true';
 
   return s;
 }
