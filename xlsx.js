@@ -7628,7 +7628,7 @@ function parse_ws_xml(data, opts, rels) {
 		parse_ws_xml_cols(columns, cols);
 	}
 
-	var sheetViewMatch = data.match(/<sheetView[^>]*>.*?<\/sheetView>/);
+	var sheetViewMatch = data.match(/<sheetView[^>]*(?:>.*?<\/sheetView>|(?:\/>))/s);
 	if(sheetViewMatch) {
 	  parse_ws_xml_sheetview(s, sheetViewMatch[0]);
 	}
